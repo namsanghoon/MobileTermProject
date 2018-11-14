@@ -128,7 +128,8 @@
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="비밀번호 : "
+                android:text="비밀번호 확인 : "
+                android:textSize="15dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <EditText
@@ -177,13 +178,7 @@
         android:background="@drawable/signuppage_button"
         android:text="회원가입" />
 
-    <TextView
-        android:text="회원이시면 여기에서 로그인 해주세요."
-        android:id="@+id/textViewSignin"
-        android:textAlignment="center"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 
     <TextView
         android:layout_gravity="center_horizontal"

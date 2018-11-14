@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText editTextEmail;
     EditText editTextPassword;
     Button buttonSignin;
-    Button textviewSingin;
+    Button textViewSignin;
     TextView textviewMessage;
     ProgressDialog progressDialog;
 
@@ -33,22 +33,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         firebaseAuth = FirebaseAuth.getInstance();
-        /*if (firebaseAuth.getCurrentUser() != null) {
-            //이미 로그인 되었다면 이 액티비티를 종료함
+        //이미 로그인 되었다면 이 액티비티를 종료 후, 다음 액티비티로 전환
+        if(firebaseAuth.getCurrentUser() != null) {
             finish();
-            //그리고 profile 액티비티를 연다.
-            startActivity(new Intent(getApplicationContext(), AfterLoginActivity.class));//추가해 줄 ProfileActivity
-        }*/
+            startActivity(new Intent(getApplicationContext(), AfterLoginActivity.class));
+        }
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        textviewSingin = findViewById(R.id.textViewSignin);
+        textViewSignin = (Button)findViewById(R.id.textViewSignin);
         textviewMessage = (TextView) findViewById(R.id.textviewMessage);
         buttonSignin = (Button) findViewById(R.id.buttonSignup);
         progressDialog = new ProgressDialog(this);
-
         buttonSignin.setOnClickListener(this);
-        textviewSingin.setOnClickListener(this);
-
+        textViewSignin.setOnClickListener(this);
     }
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
@@ -87,9 +84,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view == buttonSignin) {
             userLogin();
         }
-        if (view == textviewSingin) {
-            finish();
-            startActivity(new Intent(this, SignUpActivity.class));
+        if (view.getId() == R.id.textViewSignin) {
+            Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+            startActivity(intent);
         }
     }
 }

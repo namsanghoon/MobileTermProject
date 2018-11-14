@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,14 +24,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     //define view objects
     EditText editTextEmail;
     EditText editTextPassword;
     EditText editTextPassword_confirm;
     EditText editTextName;
     ImageButton buttonSignup;
-    TextView textviewSingin;
     TextView textviewMessage;
     TextView promise_text;
     CheckBox checkBox_forEnter;
@@ -58,14 +58,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextPassword_confirm = findViewById(R.id.editTextPassword_confirm);
-        textviewSingin = findViewById(R.id.textViewSignin);
+
         textviewMessage = findViewById(R.id.textviewMessage);
         buttonSignup = (ImageButton) findViewById(R.id.buttonSignup);
         progressDialog = new ProgressDialog(this);
         checkBox_forEnter = findViewById(R.id.checkBox_forEnter);
         editTextName = findViewById(R.id.editTextName);
-
-        promise_text = findViewById(R.id.textView14) ;
+        promise_text = findViewById(R.id.textView14);
 
         promise_text.setText(" [수집하는 개인정보의 항목]\n" +
                 " 회사는 회원가입의 서비스를 제공하기 위해 아래와 같은 개인정보를 수집하고 있습니다.\n" +
@@ -76,17 +75,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         //button click event
         buttonSignup.setOnClickListener(this);
-        textviewSingin.setOnClickListener(this);
+
 
     }
 
     //Firebse creating a new user
     private void registerUser() {
-        if(checkBox_forEnter.isChecked()) {
+        if (checkBox_forEnter.isChecked()) {
 
-        }
-        else{
-            Toast.makeText(this,"약관에 동의해 주세요.",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "약관에 동의해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         //사용자가 입력하는 email, password를 가져온다.
@@ -108,12 +106,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        if(!(password.equals(password_confirm))){
-            Toast.makeText(this,"Password가 일치 하지 않습니다.", Toast.LENGTH_SHORT).show();
+        if (!(password.equals(password_confirm))) {
+            Toast.makeText(this, "Password가 일치 하지 않습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -145,10 +143,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mReference = mDatabase.getReference("UserProfile");
 
         int index = email.indexOf("@");
-        String save_email = email.substring(0,index);
+        String save_email = email.substring(0, index);
         //        mReference.child("message").push().setValue("2");
         mReference = mDatabase.getReference("UserProfile");
-        if(!TextUtils.isEmpty(tokenID)) {
+        if (!TextUtils.isEmpty(tokenID)) {
             sendData profileData = new sendData();
             profileData.firebaseKey = tokenID;
             profileData.UserName = editTextName.getText().toString().trim();
@@ -166,10 +164,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             registerUser();
         }
 
-        /*if (view == textviewSingin) {
-            //TODO
-            startActivity(new Intent(this, LoginActivity.class)); //추가해 줄 로그인 액티비티
-        }*/
     }
 
 }

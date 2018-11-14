@@ -2,10 +2,12 @@ package com.example.test.termproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
 
-public class calculator extends AppCompatActivity {
+public class LostRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cal);
+        setContentView(R.layout.activity_lost_register);
+
     }
 }
