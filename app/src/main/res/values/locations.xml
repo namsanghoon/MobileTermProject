@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="locations">
+        <item>경상대</item>
+        <item>공과대학 1호관</item>
+        <item>공과대학 2호관</item>
+        <item>공과대학 3호관</item>
+        <item>공과대학 4호관</item>
+        <item>공과대학 5호관</item>
+        <item>농업 생명 공학관</item>
+        <item>농업생명과학대학 1호관</item>
+        <item>농업생명과학대학 2호관</item>
+        <item>농업생명과학대학 3호관</item>
+        <item>도서관</item>
+        <item>백마교양관</item>
+        <item>법과대학</item>
+        <item>사범대학</item>
+        <item>사회과학대학</item>
+        <item>생명시스템과학대학</item>
+        <item>생활과학대학</item>
+        <item>수의과대학</item>
+        <item>약학대학</item>
+        <item>예술대학</item>
+        <item>인문대학</item>
+        <item>자연과학대학</item>
+        <item>제 1 후생관</item>
+        <item>제 2 후생관</item>
+        <item>제 3 후생관</item>
+        <item>학생 생활관</item>
+        <item>기타</item>
+
+    </string-array>
+
+    
+    
+</resources>
