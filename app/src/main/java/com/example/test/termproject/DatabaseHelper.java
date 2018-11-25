@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG,"onCreate()");
-        sql = "CREATE TABLE lost_list(_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, tel TEXT, location TEXT, detail TEXT, photo TEXT);";
+        sql = "CREATE TABLE lost_list(_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, name TEXT, email TEXT, tel TEXT, location TEXT, detail TEXT, photo TEXT);";
         db.execSQL(sql);
     }
     /*public void onOpen(SQLiteDatabase db){

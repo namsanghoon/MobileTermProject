@@ -1,16 +1,21 @@
 package com.example.test.termproject;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
@@ -21,37 +26,64 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
-public class LostRegisterActivity extends AppCompatActivity  {
-    final static String TAG ="LostRegisterActivity";
+public class LostRegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    final static String TAG = "LostRegisterActivity";
     final int GALLERY_CODE = 10;
     DatabaseHelper databaseHelper;
-    Button register;
+    Button register, cancel;
     ImageView img;
     Spinner spinner;
-    EditText name, tel, explain;
-    Uri imageUri;
-    String encodedImageString;
-    Bitmap bitmap;
+    EditText title, name, tel, explain;
+    FirebaseAuth firebaseAuth;
+    FirebaseStorage storage;
+    FirebaseDatabase database;
+    public String imagePath = "";
+
+    //private DatabaseReference mReference = Database.getReference();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_register);
 
-        databaseHelper = new DatabaseHelper(this);
+        if (Build.VERSION.SDK_INT >= 21) {
+            // 21 버전 이상일 때
+            getWindow().setStatusBarColor(Color.parseColor("#321c54"));
+        }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+        firebaseAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+        title = (EditText) findViewById(R.id.title);
         name = (EditText) findViewById(R.id.name);
         tel = (EditText) findViewById(R.id.phone);
         explain = (EditText) findViewById(R.id.explain);
         img = (ImageView) findViewById(R.id.imageView1);
         register = (Button) findViewById(R.id.register);
-
-        img.setOnClickListener(listener);
-        register.setOnClickListener(listener);
-
+        cancel = (Button) findViewById(R.id.cancel);
+        img.setOnClickListener(this);
+        register.setOnClickListener(this);
+        cancel.setOnClickListener(this);
         spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.locations, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -59,66 +91,90 @@ public class LostRegisterActivity extends AppCompatActivity  {
 
     }
 
-    View.OnClickListener listener = new View.OnClickListener() {
-        SQLiteDatabase sDB;
-        ContentValues data;
 
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.imageView1:
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                    startActivityForResult(intent, GALLERY_CODE);
-                    break;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-                case R.id.register:
-                    try {
-                        sDB = databaseHelper.getWritableDatabase();
-                        data = new ContentValues();
-
-                        data.put("name", name.getText().toString());
-                        data.put("tel", tel.getText().toString());
-                        data.put("location", spinner.getSelectedItem().toString());
-                        data.put("detail", explain.getText().toString());
-                        data.put("photo",encodedImageString.toString());
-
-                        sDB.insert("lost_list", null, data);
-                        databaseHelper.close();
-                        Toast.makeText(getBaseContext(),"등록완료",Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
+        if (data != null) {
+            if (requestCode == GALLERY_CODE) {
+                imagePath = getPath(data.getData());
+                File f = new File(imagePath);
+                img.setImageURI(Uri.fromFile(f));
             }
-
-
-
         }
-    };
 
-    //Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == GALLERY_CODE) {
-            //imgbit = (Bitmap)data.getExtras().get("data");
-            //bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
-            imageUri = data.getData();
-            getContentResolver().notifyChange(imageUri, null);
-            ContentResolver cr = getContentResolver();
-            try {
-                bitmap = MediaStore.Images.Media
-                        .getBitmap(cr, imageUri);
-                img.setImageBitmap(bitmap);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] b = baos.toByteArray();
-                encodedImageString = Base64.encodeToString(b, Base64.DEFAULT);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-        }
     }
 
+    public String getPath(Uri uri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader cursorLoader = new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(index);
+    }
 
+    public void upload_img(final String uri) {
+        StorageReference storageRef = storage.getReference();
+        Uri file = Uri.fromFile(new File(uri));
+        final StorageReference riversRef = storageRef.child("Lost_list/" + file.getLastPathSegment());
+        final UploadTask uploadTask = riversRef.putFile(file);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return riversRef.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUrl = task.getResult();
+                            ImageDTO imageDTO = new ImageDTO();
+                            imageDTO.title = title.getText().toString();
+                            imageDTO.name = name.getText().toString();
+                            imageDTO.tel = tel.getText().toString();
+                            imageDTO.location = spinner.getSelectedItem().toString();
+                            imageDTO.detail = explain.getText().toString();
+                            imageDTO.imageUrl = downloadUrl.toString();
+                            imageDTO.uid = firebaseAuth.getCurrentUser().getUid();
+                            imageDTO.userId = firebaseAuth.getCurrentUser().getEmail();
+                            database.getReference().child("Lost_list").push().setValue(imageDTO);
+                        }
+                    }
+                });
+            }
+        });
+// Register observers to listen for when the download is done or if it fails
+
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == img) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            //intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+            startActivityForResult(intent, GALLERY_CODE);
+        }
+        if (view == register) {
+            upload_img(imagePath);
+            finish();
+        }
+        if (view == cancel) {
+           finish();
+        }
+    }
 }
