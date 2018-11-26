@@ -23,8 +23,9 @@
         <activity android:name=".LostActivity"></activity>
         <activity android:name=".FoundActivity"></activity>
         <activity android:name=".FoundRegisterActivity"></activity>
-        <activity android:name=".BoardActivity"></activity>
+        <activity android:name=".DetailActivity"></activity>
         <activity android:name=".LostRegisterActivity"></activity>
+
     </application>
 
 </manifest>

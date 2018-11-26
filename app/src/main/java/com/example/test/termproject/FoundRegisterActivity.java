@@ -11,12 +11,14 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +35,6 @@ import java.io.File;
 
 public class FoundRegisterActivity extends AppCompatActivity implements View.OnClickListener {
     final int GALLERY_CODE = 10;
-    DatabaseHelper databaseHelper;
     Button register, cancel;
     ImageView img;
     Spinner spinner;
@@ -141,12 +142,32 @@ public class FoundRegisterActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         if (view == img) {
             Intent intent = new Intent(Intent.ACTION_PICK);
-            //intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
             intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
             startActivityForResult(intent, GALLERY_CODE);
         }
         if (view == register) {
+            String title_check = title.getText().toString().trim();
+            String name_check = name.getText().toString().trim();
+            String tel_check = tel.getText().toString().trim();
+            if(imagePath==""){
+                Toast.makeText(this, "사진을 등록해 주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(title_check)) {
+                Toast.makeText(this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(name_check)) {
+                Toast.makeText(this, "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(tel_check)) {
+                Toast.makeText(this, "연락처를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             upload_img(imagePath);
+            Toast.makeText(getBaseContext(),"등록이 완료되었습니다.",Toast.LENGTH_SHORT).show();
             finish();
         }
         if (view == cancel) {
