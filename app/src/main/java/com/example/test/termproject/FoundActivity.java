@@ -40,6 +40,7 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_found);
         FoundRegister = findViewById(R.id.found_register);
         FoundRegister.setOnClickListener(this);
+
         database = FirebaseDatabase.getInstance();
         date = new SimpleDateFormat("yyyy년 MM월 dd일").format(new Date());
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

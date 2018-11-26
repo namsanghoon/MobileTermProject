@@ -28,6 +28,7 @@
         android:layout_width="188dp"
         android:layout_height="45dp"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:scaleType="fitXY"
         android:text="습득물 등록" />
 

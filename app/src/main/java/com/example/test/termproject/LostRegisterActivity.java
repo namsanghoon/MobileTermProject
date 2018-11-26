@@ -45,7 +45,6 @@ import java.io.IOException;
 public class LostRegisterActivity extends AppCompatActivity implements View.OnClickListener {
     final static String TAG = "LostRegisterActivity";
     final int GALLERY_CODE = 10;
-    DatabaseHelper databaseHelper;
     Button register, cancel;
     ImageView img;
     Spinner spinner;
@@ -157,6 +156,46 @@ public class LostRegisterActivity extends AppCompatActivity implements View.OnCl
             }
         });
 // Register observers to listen for when the download is done or if it fails
+        final StorageReference riversRef2 = storageRef.child(spinner.getSelectedItem().toString()+"/" + file.getLastPathSegment());
+        final UploadTask uploadTask2 = riversRef2.putFile(file);
+        uploadTask2.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> urlTask = uploadTask2.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return riversRef2.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUrl = task.getResult();
+                            ImageDTO imageDTO = new ImageDTO();
+                            imageDTO.title = title.getText().toString();
+                            imageDTO.name = name.getText().toString();
+                            imageDTO.tel = tel.getText().toString();
+                            imageDTO.location = spinner.getSelectedItem().toString();
+                            imageDTO.detail = explain.getText().toString();
+                            imageDTO.imageUrl = downloadUrl.toString();
+                            imageDTO.uid = firebaseAuth.getCurrentUser().getUid();
+                            imageDTO.userId = firebaseAuth.getCurrentUser().getEmail();
+                            database.getReference().child(spinner.getSelectedItem().toString()).push().setValue(imageDTO);
+                        }
+                    }
+                });
+            }
+        });
 
 
     }

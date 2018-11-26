@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,14 +25,14 @@ import java.net.URL;
 
 import static com.google.common.io.ByteStreams.copy;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class Detail_lost_Activity extends AppCompatActivity implements View.OnClickListener {
     String Detail_title,Detail_name,Detail_tel,Detail_location,Detail_explain,url;
     TextView title,name,tel,location,explain;
     ImageView imageView;
     Button message;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_lost_detail);
         if (Build.VERSION.SDK_INT >= 21) {
             // 21 버전 이상일 때
             getWindow().setStatusBarColor(Color.parseColor("#321c54"));
@@ -49,6 +47,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         Detail_explain = intent.getExtras().getString("explain");
         url = intent.getExtras().getString("url");
 
+
+        Toast.makeText(getBaseContext(),Detail_tel+Detail_location+Detail_explain,Toast.LENGTH_SHORT).show();
         imageView = (ImageView)findViewById(R.id.imageView1);
         title = (TextView) findViewById(R.id.title);
         name = (TextView) findViewById(R.id.name);
@@ -72,6 +72,5 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             intent.putExtra("tel",tel.getText().toString());
             startActivity(intent);
         }
-
     }
 }
