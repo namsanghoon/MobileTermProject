@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,28 +23,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class LostActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageButton LostRegister,campus;
+public class location_lost_Activity extends AppCompatActivity {
+    String location;
+    TextView textView;
+    String text,date;
     public RecyclerView recyclerView;
     public List<ImageDTO> imageDTOS = new ArrayList<>();
     public FirebaseDatabase database;
-    String date;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lost);
-        campus = (ImageButton)findViewById(R.id.campus);
-        LostRegister =(ImageButton)findViewById(R.id.LostRegister);
-        LostRegister.setOnClickListener(this);
-        campus.setOnClickListener(this);
-        database = FirebaseDatabase.getInstance();
+        setContentView(R.layout.activity_location_lost);
+        Intent intent = getIntent();
+        location = intent.getExtras().getString("location");
+        textView = (TextView)findViewById(R.id.textview);
         date = new SimpleDateFormat("yyyy년 MM월 dd일").format(new Date());
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_1);
+        text =textView.getText().toString();
+        textView.setText(location+" "+text);
+        database = FirebaseDatabase.getInstance();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final BoardRecycleViewAdapter boardRecycleViewAdapter = new BoardRecycleViewAdapter();
         recyclerView.setAdapter(boardRecycleViewAdapter);
-
-        database.getReference().child("Lost_list").addValueEventListener(new ValueEventListener() {
+        database.getReference().child(location.toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageDTOS.clear();
@@ -69,7 +68,7 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
 
-            return new BoardRecycleViewAdapter.CustomViewHolder(view);
+            return new CustomViewHolder(view);
         }
 
         @Override
@@ -81,7 +80,7 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             ((CustomViewHolder) holder).textView5.setText(imageDTOS.get(position).location);
             ((CustomViewHolder) holder).textView6.setText(imageDTOS.get(position).detail);
             ((CustomViewHolder) holder).textView7.setText(imageDTOS.get(position).imageUrl);
-            Glide.with(holder.itemView.getContext()).load(imageDTOS.get(position).imageUrl).into((((CustomViewHolder) holder).imageView));
+            Glide.with(holder.itemView.getContext()).load(imageDTOS.get(position).imageUrl).into(((CustomViewHolder) holder).imageView);
         }
 
         @Override
@@ -126,15 +125,4 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view == LostRegister){
-            Intent intent = new Intent(LostActivity.this,LostRegisterActivity.class);
-            startActivity(intent);
-        }
-        if(view == campus){
-            Intent intent = new Intent(LostActivity.this,campus.class);
-            startActivity(intent);
-        }
-    }
 }

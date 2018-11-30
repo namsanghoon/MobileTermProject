@@ -26,10 +26,11 @@ import java.net.URL;
 import static com.google.common.io.ByteStreams.copy;
 
 public class Detail_lost_Activity extends AppCompatActivity implements View.OnClickListener {
-    String Detail_title,Detail_name,Detail_tel,Detail_location,Detail_explain,url;
-    TextView title,name,tel,location,explain;
+    String Detail_title, Detail_name, Detail_tel, Detail_location, Detail_explain, url;
+    TextView title, name, tel, location, explain;
     ImageView imageView;
     Button message;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_detail);
@@ -37,9 +38,9 @@ public class Detail_lost_Activity extends AppCompatActivity implements View.OnCl
             // 21 버전 이상일 때
             getWindow().setStatusBarColor(Color.parseColor("#321c54"));
         }
-        message = (Button)findViewById(R.id.message);
+        message = (Button) findViewById(R.id.message);
         message.setOnClickListener(this);
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         Detail_title = intent.getExtras().getString("title");
         Detail_name = intent.getExtras().getString("name");
         Detail_tel = intent.getExtras().getString("tel");
@@ -48,8 +49,8 @@ public class Detail_lost_Activity extends AppCompatActivity implements View.OnCl
         url = intent.getExtras().getString("url");
 
 
-        Toast.makeText(getBaseContext(),Detail_tel+Detail_location+Detail_explain,Toast.LENGTH_SHORT).show();
-        imageView = (ImageView)findViewById(R.id.imageView1);
+        Toast.makeText(getBaseContext(), Detail_tel + Detail_location + Detail_explain, Toast.LENGTH_SHORT).show();
+        imageView = (ImageView) findViewById(R.id.imageView1);
         title = (TextView) findViewById(R.id.title);
         name = (TextView) findViewById(R.id.name);
         tel = (TextView) findViewById(R.id.phone);
@@ -62,14 +63,15 @@ public class Detail_lost_Activity extends AppCompatActivity implements View.OnCl
         explain.setText(Detail_explain.toString());
         UrlImageViewHelper.setUrlDrawable(imageView, url);
 
+
     }
 
 
     @Override
     public void onClick(View view) {
-        if(view==message){
-            Intent intent = new Intent(view.getContext(),MessageActivity.class);
-            intent.putExtra("tel",tel.getText().toString());
+        if (view == message) {
+            Intent intent = new Intent(view.getContext(), MessageActivity.class);
+            intent.putExtra("tel", tel.getText().toString());
             startActivity(intent);
         }
     }
