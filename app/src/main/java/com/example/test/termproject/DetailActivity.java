@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     String Detail_title,Detail_name,Detail_tel,Detail_location,Detail_explain,url;
     TextView title,name,tel,location,explain;
     ImageView imageView;
-    Button message;
+    ImageButton message;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
@@ -39,7 +40,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             // 21 버전 이상일 때
             getWindow().setStatusBarColor(Color.parseColor("#321c54"));
         }
-        message = (Button)findViewById(R.id.message);
+        message = (ImageButton)findViewById(R.id.message);
         message.setOnClickListener(this);
         Intent intent=getIntent();
         Detail_title = intent.getExtras().getString("title");

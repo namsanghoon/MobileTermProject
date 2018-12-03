@@ -3,6 +3,7 @@ package com.example.test.termproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 public class LostActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageButton LostRegister,campus;
+    ImageButton LostRegister, campus;
     public RecyclerView recyclerView;
     public List<ImageDTO> imageDTOS = new ArrayList<>();
     public FirebaseDatabase database;
@@ -34,8 +35,8 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost);
-        campus = (ImageButton)findViewById(R.id.campus);
-        LostRegister =(ImageButton)findViewById(R.id.LostRegister);
+        campus = (ImageButton) findViewById(R.id.campus);
+        LostRegister = (ImageButton) findViewById(R.id.LostRegister);
         LostRegister.setOnClickListener(this);
         campus.setOnClickListener(this);
         database = FirebaseDatabase.getInstance();
@@ -62,6 +63,7 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
     class BoardRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @NonNull
         @Override
@@ -112,13 +114,13 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(view.getContext(),DetailActivity.class);
-                        intent.putExtra("title",textView.getText().toString());
-                        intent.putExtra("name",textView2.getText().toString());
-                        intent.putExtra("tel",textView4.getText().toString());
-                        intent.putExtra("location",textView5.getText().toString());
-                        intent.putExtra("explain",textView6.getText().toString());
-                        intent.putExtra("url",textView7.getText().toString());
+                        Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                        intent.putExtra("title", textView.getText().toString());
+                        intent.putExtra("name", textView2.getText().toString());
+                        intent.putExtra("tel", textView4.getText().toString());
+                        intent.putExtra("location", textView5.getText().toString());
+                        intent.putExtra("explain", textView6.getText().toString());
+                        intent.putExtra("url", textView7.getText().toString());
                         startActivity(intent);
                     }
                 });
@@ -127,13 +129,20 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LostActivity.this, AfterLoginActivity.class);
+        startActivity(intent);
+    }
+
+
+    @Override
     public void onClick(View view) {
-        if(view == LostRegister){
-            Intent intent = new Intent(LostActivity.this,LostRegisterActivity.class);
+        if (view == LostRegister) {
+            Intent intent = new Intent(LostActivity.this, LostRegisterActivity.class);
             startActivity(intent);
         }
-        if(view == campus){
-            Intent intent = new Intent(LostActivity.this,campus.class);
+        if (view == campus) {
+            Intent intent = new Intent(LostActivity.this, campus.class);
             startActivity(intent);
         }
     }

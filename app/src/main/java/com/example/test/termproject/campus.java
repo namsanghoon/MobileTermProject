@@ -48,7 +48,8 @@ public class campus extends AppCompatActivity implements View.OnClickListener {
             startActivity(intent);
         }
         if(view==list){
-            Intent intent = new Intent(this,location_lost_Activity.class);
+            Intent intent = new Intent(this,LostActivity.class);
+            startActivity(intent);
         }
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back2"
     android:orientation="vertical">
     <TextView
         android:layout_width="242dp"
@@ -14,10 +15,13 @@
         android:textSize="20dp" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/logo" />
+        android:id="@+id/school"
+        android:background="#00ffffff"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:src="@drawable/school" />
 
     <Button
         android:id="@+id/lost"
