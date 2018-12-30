@@ -22,7 +22,7 @@ public class campus extends AppCompatActivity implements View.OnClickListener {
     ImageView map,detail;
     Spinner spinner;
     Button move;
-    ImageButton list;
+    Button list;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus);
@@ -36,7 +36,7 @@ public class campus extends AppCompatActivity implements View.OnClickListener {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         move.setOnClickListener(this);
-        list = (ImageButton)findViewById(R.id.list);
+        list = (Button) findViewById(R.id.list);
         list.setOnClickListener(this);
     }
 

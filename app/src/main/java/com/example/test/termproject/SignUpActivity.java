@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,7 +31,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     EditText editTextPassword;
     EditText editTextPassword_confirm;
     EditText editTextName;
-    ImageButton buttonSignup;
+    Button buttonSignup;
     TextView textviewMessage;
     TextView promise_text;
     CheckBox checkBox_forEnter;
@@ -60,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         editTextPassword_confirm = findViewById(R.id.editTextPassword_confirm);
 
         textviewMessage = findViewById(R.id.textviewMessage);
-        buttonSignup = (ImageButton) findViewById(R.id.buttonSignup);
+        buttonSignup = (Button) findViewById(R.id.buttonSignup);
         progressDialog = new ProgressDialog(this);
         checkBox_forEnter = findViewById(R.id.checkBox_forEnter);
         editTextName = findViewById(R.id.editTextName);
@@ -74,6 +75,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 " 1. 회원가입을 위한 본인확인 및 개인식별");
 
         //button click event
+        promise_text.setMovementMethod(new ScrollingMovementMethod());
         buttonSignup.setOnClickListener(this);
 
 

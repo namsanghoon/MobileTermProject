@@ -5,20 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:shadowColor="#35D4CF"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="25"
         android:text="메세지 보내기"
-        android:layout_gravity="center_horizontal"
+        android:textColor="#000"
+        android:layout_marginBottom="20dp"
         android:textSize="30dp" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
         android:id="@+id/et"
-        android:hint="내용을 입력해주세요"
-        android:textSize="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/round_back"
         android:gravity="left"
-        android:inputType="textMultiLine"/>
+        android:hint="내용을 입력해주세요"
+        android:inputType="textMultiLine"
+        android:paddingLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,17 +37,23 @@
 
         <Button
             android:id="@+id/send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
-            android:text="전송" />
+            android:background="@drawable/listitem"
+            android:text="전송"
+            android:layout_marginRight="10dp"
+            android:textColor="#fff"
+            android:textSize="18dp" />
 
         <Button
             android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
-            android:text="취소" />
+            android:background="@drawable/button"
+            android:text="취소"
+            android:textSize="18dp" />
     </LinearLayout>
 
 </LinearLayout>

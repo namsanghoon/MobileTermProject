@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -86,6 +88,7 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
             ((CustomViewHolder) holder).textView5.setText(imageDTOS.get(position).location);
             ((CustomViewHolder) holder).textView6.setText(imageDTOS.get(position).detail);
             ((CustomViewHolder) holder).textView7.setText(imageDTOS.get(position).imageUrl);
+            ((CustomViewHolder) holder).textView8.setText(imageDTOS.get(position).userId);
             Glide.with(holder.itemView.getContext()).load(imageDTOS.get(position).imageUrl).into(((CustomViewHolder) holder).imageView);
         }
 
@@ -103,6 +106,7 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
             TextView textView5;
             TextView textView6;
             TextView textView7;
+            TextView textView8;
 
             public CustomViewHolder(View view) {
                 super(view);
@@ -113,17 +117,21 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
                 textView4 = (TextView) view.findViewById(R.id.tel);
                 textView5 = (TextView) view.findViewById(R.id.location);
                 textView6 = (TextView) view.findViewById(R.id.explain);
-                textView7 = (TextView) view.findViewById(R.id.url);
+                textView7 = (TextView) view.findViewById(R.id.imageUrl);
+                textView8= (TextView) view.findViewById(R.id.userId);
+
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(view.getContext(),DetailActivity.class);
+
+                        Intent intent = new Intent(view.getContext(),Detail_lost_Activity.class);
                         intent.putExtra("title",textView.getText().toString());
                         intent.putExtra("name",textView2.getText().toString());
                         intent.putExtra("tel",textView4.getText().toString());
                         intent.putExtra("location",textView5.getText().toString());
                         intent.putExtra("explain",textView6.getText().toString());
                         intent.putExtra("url",textView7.getText().toString());
+                        intent.putExtra("userid",textView8.getText().toString());
                         startActivity(intent);
                     }
                 });

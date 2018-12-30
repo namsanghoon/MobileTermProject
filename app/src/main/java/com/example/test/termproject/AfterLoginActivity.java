@@ -34,12 +34,10 @@ public class AfterLoginActivity extends AppCompatActivity implements View.OnClic
             startActivity(intent);
         }
         if(view == Lost){
-            finish();
             Intent intent = new Intent(AfterLoginActivity.this, LostActivity.class);
             startActivity(intent);
         }
         if(view == Found){
-            finish();
             Intent intent = new Intent(AfterLoginActivity.this, FoundActivity.class);
             startActivity(intent);
         }
